@@ -4,12 +4,18 @@ function Hero(name, level) {
   this.level = level;
 }
 Hero.prototype.greet = function () {
-  return this.name + " greets " + computerCharacter + " with a hearty hello";
+  playSound("greetSound");
+  playerCombatText.classList = "player-combat-text";
+  return this.name + " greets " + computerCharacter;
 };
-Hero.prototype.bow = function () {
-  return this.name + " bows down at " + computerCharacter + "'s feet";
+Hero.prototype.laugh = function () {
+  playSound("laughSound");
+  playerCombatText.classList = "player-combat-text";
+  return this.name + " laughs at " + computerCharacter;
 };
 Hero.prototype.cheer = function () {
+  playSound("cheerSound");
+  playerCombatText.classList = "player-combat-text";
   return this.name + " cheers loudly";
 };
 function Warrior(name, heroClass, level, weapon, kills) {
@@ -50,7 +56,7 @@ const itemKills = document.querySelector(".toolbar-item4");
 const itemExit = document.querySelector(".toolbar-item5");
 const btnAttack = document.querySelector(".attack");
 const btnGreet = document.querySelector(".greet");
-const btnBow = document.querySelector(".bow");
+const btnLaugh = document.querySelector(".laugh");
 const btnCheer = document.querySelector(".cheer");
 const warriorImg = document.querySelector("#warrior");
 const mageImg = document.querySelector("#mage");
@@ -176,7 +182,7 @@ document.addEventListener("keydown", function (event) {
 document.addEventListener("keydown", function (event) {
   if (event.key === "3") {
     playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
-    playerCombatText.textContent = player.bow();
+    playerCombatText.textContent = player.laugh();
   }
 });
 document.addEventListener("keydown", function (event) {
@@ -225,6 +231,16 @@ function resetBeforeBattle() {
   characterSelectionArea.style.display = "none";
   characterCreationArea.style.display = "none";
   btnCombatLog.style.display = "none";
+}
+
+function playSound(soundId) {
+  const sound = document.getElementById(soundId);
+  sound.play();
+  if (soundId === "musicSound") sound.volume = 0.6;
+}
+function stopSound(soundId) {
+  const sound = document.getElementById(soundId);
+  sound.pause();
 }
 function startGame() {
   resetBeforeBattle();
@@ -340,6 +356,7 @@ function insertCharacters() {
   }
 }
 function startBattle() {
+  playSound("musicSound");
   playerTurn = true;
   playerTimesCrit = 0;
   playerTimesAttack = 0;
@@ -366,14 +383,17 @@ function calculateAttackDamage(weapon) {
   let damage;
   let baseDamage;
   let critChance;
-  if (weapon === "axe") {
+  if (weapon === "fists") {
+    baseDamage = 6;
+    critChance = 0.5;
+  } else if (weapon === "axe") {
     baseDamage = 10;
     critChance = 0.3;
   } else if (weapon === "sword") {
     baseDamage = 13;
     critChance = 0.2;
   } else if (weapon === "wand") {
-    baseDamage = 16;
+    baseDamage = 200;
     critChance = 0.15;
   } else if (weapon === "Goblin") {
     baseDamage = 12;
@@ -410,7 +430,34 @@ function calculateAttackDamage(weapon) {
 
   return damage;
 }
+
+function playSoundEffect(effect) {
+  if (effect === "fists" || effect === "Nightmare") {
+    playSound("punchSound");
+  } else if (effect === "axe") {
+    playSound("axeSound");
+  } else if (effect === "sword" || effect === "Goblin") {
+    playSound("swordSound");
+  } else if (effect === "wand") {
+    playSound("wandSound");
+  } else if (effect === "victory") {
+    playSound("victorySound");
+  } else if (effect === "levelUp") {
+    playSound("levelUpSound");
+  } else if (effect === "Battle-mage") {
+    playSound("bigSwordSound");
+  } else if (effect === "died") {
+    playSound("diedSound");
+  } else if (effect === "greet") {
+    playSound("greetSound");
+  } else if (effect === "cheer") {
+    playSound("cheerSound");
+  } else if (effect === "laugh") {
+    playSound("laughSound");
+  } else playSound("clawSound");
+}
 function attackComputer() {
+  playSoundEffect(player.weapon);
   playerCombatText.classList = "player-combat-text";
   playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
   computerCombatText.style.backgroundColor = "";
@@ -430,16 +477,16 @@ function attackComputer() {
 
   if (crit)
     computerCombatLog.innerHTML +=
-      "<br>Hit with a critical strike for " + attackDamage + " damage";
+      "<br>Was crit for " + attackDamage + " damage";
   else
     computerCombatLog.innerHTML +=
-      "<br>Hit with a normal strike for " + attackDamage + " damage";
+      "<br>Was hit for " + attackDamage + " damage";
 
   if (attackDamage > computerCurrentHealth) {
     computerHealthBarInner.style.width = "0%";
     computerHealthNumbers.textContent = "0/100";
     computerCombatLog.innerHTML += "<br>Died";
-    winningDisplay("player");
+    battleOverDisplay("player");
     return;
   }
   crit = false;
@@ -448,6 +495,7 @@ function attackComputer() {
   }, 3000);
 }
 function attackPlayer() {
+  playSoundEffect(computerCharacter);
   computerCombatText.classList = "computer-combat-text";
   playerCombatText.style.backgroundColor = "";
   computerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
@@ -465,25 +513,26 @@ function attackPlayer() {
   playerCombatText.textContent = attackDamage;
 
   if (crit)
-    playerCombatLog.innerHTML +=
-      "<br>Hit with a critical strike for " + attackDamage + " damage";
+    playerCombatLog.innerHTML += "<br>Was crit for " + attackDamage + " damage";
   else
-    playerCombatLog.innerHTML +=
-      "<br>Hit with a normal strike for " + attackDamage + " damage";
+    playerCombatLog.innerHTML += "<br>Was hit for " + attackDamage + " damage";
 
   if (attackDamage > playerCurrentHealth) {
     playerHealthBarInner.style.width = "0%";
     playerHealthNumbers.textContent = "0/100";
     playerCombatLog.innerHTML += "<br>Died";
-    winningDisplay("computer");
+    battleOverDisplay("computer");
   }
   crit = false;
   playerTurn = true;
 }
-function winningDisplay(winner) {
+function battleOverDisplay(winner) {
   if (winner !== "player") {
     warriorImg.classList = "dead character-placement";
     mageImg.classList = "dead character-placement";
+    playerTurn = false;
+    playSoundEffect("died");
+    stopSound("musicSound");
   } else {
     goblinImg.classList = "dead computer-img";
     nightmareBoyImg.classList = "dead computer-img";
@@ -493,17 +542,21 @@ function winningDisplay(winner) {
       griffinImg.classList = "dead180 computer-img";
       dragonImg.classList = "dead180 computer-img";
     }
+    if (computerCharacter !== "Battle-mage") {
+      playSoundEffect("levelUp");
+    }
   }
-
   setTimeout(() => {
     setBattleBarsStatus("off");
     displayBattleOverMessage(winner);
-  }, 1500);
+  }, 2000);
 }
 function displayBattleOverMessage(winner) {
   if (winner === "player" && computerCharacter === "Battle-mage") {
     getReward();
-  } else if (winner === "player") {
+    return;
+  }
+  if (winner === "player") {
     player.kills++;
     player.level++;
     messageArea.style.display = "";
@@ -519,6 +572,7 @@ function displayBattleOverMessage(winner) {
     btnCombatLog.style.display = "";
     messageArea.appendChild(btnCombatLog);
   } else {
+    playerTurn = false;
     messageArea.style.display = "";
     btnPlayAgain.style.display = "";
     welcomeHeading.textContent = "You lost!";
@@ -537,6 +591,8 @@ function displayBattleOverMessage(winner) {
 }
 
 function getReward() {
+  stopSound("musicSound");
+  playSoundEffect("victory");
   messageArea.style.display = "";
   chest.style.display = "";
   welcomeParagraph.textContent = "...and found the treasure!";
@@ -547,6 +603,9 @@ function gameOver() {
   player.level++;
   messageArea.style.display = "";
   welcomeHeading.textContent = "You beat the game!";
+  btnNewGame.classList = "button-new-game";
+  btnNewGame.textContent = "New Game";
+  messageArea.appendChild(btnNewGame);
   btnCombatLog.classList = "play-again-button";
   btnCombatLog.textContent = "Combat log";
   btnCombatLog.style.display = "";

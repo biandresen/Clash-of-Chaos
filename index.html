@@ -22,7 +22,7 @@
         </ul>
       </div>
       <div class="message-area">
-        <img id="chest" src="img/chest.png" alt="chest">
+        <img id="chest" src="img/chest.png" alt="chest" />
       </div>
       <div class="character-selection-area">
         <div class="character warrior">
@@ -47,7 +47,7 @@
             <input type="text" id="name" autofocus required />
           </label>
           <div class="weapon-selection-heading">Weapon selection</div>
-          <input id="weapon-choice" type="text" disabled required />
+          <input id="weapon-choice" type="text" value="fists" disabled />
           <div class="weapon-selection-area">
             <label id="axe-label" for="axe">
               Axe<img class="weapon-img" src="img/axe.png" alt="axe" id="axe" />
@@ -130,10 +130,23 @@
         <div class="spells">
           <button class="action spell attack">1. Attack</button>
           <button class="action spell greet">2. Greet</button>
-          <button class="action spell bow">3. Bow</button>
+          <button class="action spell laugh">3. Laugh</button>
           <button class="action spell cheer">4. Cheer</button>
         </div>
       </div>
     </div>
+    <audio id="musicSound" src="audio/themeMusic.mp3"></audio>
+    <audio id="victorySound" src="audio/victory.mp3"></audio>
+    <audio id="axeSound" src="audio/axeSound.mp3"></audio>
+    <audio id="swordSound" src="audio/swordSound.mp3"></audio>
+    <audio id="wandSound" src="audio/wandSound.mp3"></audio>
+    <audio id="punchSound" src="audio/punchSound.mp3"></audio>
+    <audio id="clawSound" src="audio/clawAttack.mp3"></audio>
+    <audio id="bigSwordSound" src="audio/bigSword.mp3"></audio>
+    <audio id="levelUpSound" src="audio/levelUp.mp3"></audio>
+    <audio id="diedSound" src="audio/died.mp3"></audio>
+    <audio id="greetSound" src="audio/greet.mp3"></audio>
+    <audio id="cheerSound" src="audio/cheer.mp3"></audio>
+    <audio id="laughSound" src="audio/laugh.mp3"></audio>
   </body>
 </html>
