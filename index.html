@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Objects</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="content">
+      <h1 id="headline">CLASH of CHAOS</h1>
+      <button id="battle-button">Battle</button>
+      <div class="toolbar">
+        <ul>
+          <li class="toolbar-item toolbar-item1">Name:</li>
+          <li class="toolbar-item toolbar-item2">Class:</li>
+          <li class="toolbar-item toolbar-item3">Level:</li>
+          <li class="toolbar-item toolbar-item4">Score:</li>
+          <li class="toolbar-item toolbar-item5">Restart</li>
+        </ul>
+      </div>
+      <div class="message-area"></div>
+      <div class="character-selection-area">
+        <div class="character warrior">
+          <div class="character-name warrior-name">Warrior</div>
+          <img
+            class="warrior"
+            id="warrior"
+            src="img/warrior.png"
+            alt="Warrior"
+          />
+        </div>
+        <div class="character mage">
+          <div class="character-name mage-name">Mage</div>
+          <img id="mage" src="img/mage.png" alt="Mage" />
+        </div>
+      </div>
+      <div class="character-creation-area">
+        <form id="character-creation-form" action="" method="get">
+          <legend>Character creation</legend>
+          <label for="name"
+            >Character Name
+            <input type="text" id="name" autofocus required />
+          </label>
+          <div class="weapon-selection-heading">Weapon selection</div>
+          <input id="weapon-choice" type="text" disabled required />
+          <div class="weapon-selection-area">
+            <label id="axe-label" for="axe">
+              Axe<img class="weapon-img" src="img/axe.png" alt="axe" id="axe" />
+            </label>
+            <label id="sword-label" for="sword">
+              Sword<img
+                class="weapon-img"
+                src="img/sword.png"
+                alt="sword"
+                id="sword"
+              />
+            </label>
+            <label id="wand-label" for="wand">
+              Wand<img
+                class="weapon-img"
+                src="img/wand.png"
+                alt="wand"
+                id="wand"
+              />
+            </label>
+          </div>
+        </form>
+        <button id="create-button" type="submit" form="character-creation-form">
+          Create
+        </button>
+        <div class="character-creation-name"></div>
+        <div class="character-creation-image"></div>
+      </div>
+      <div class="battle-field">
+        <div class="player-combat-text"></div>
+        <div class="player-combat-log"></div>
+        <div class="player-health-bar-outer">
+          <div class="player-health-numbers"></div>
+          <div class="player-health-bar-inner"></div>
+        </div>
+        <div class="computer-combat-text"></div>
+        <div class="computer-combat-log"></div>
+        <div class="computer-health-bar-outer">
+          <div class="computer-health-numbers"></div>
+          <div class="computer-health-bar-inner"></div>
+        </div>
+        <img src="img/warewolf.png" alt="werewolf" class="werewolf-img" />
+        <img
+          class="battle-mage-img"
+          src="img/battle_mage.png"
+          alt="Battle Mage"
+        />
+      </div>
+      <div class="spellbar">
+        <div class="spells">
+          <button class="action spell melee-attack">1. Attack</button>
+        </div>
+        <div class="gestures">
+          <button class="action gesture greet">2. Greet</button>
+          <button class="action gesture bow">3. Bow</button>
+          <button class="action gesture cheer">4. Cheer</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
