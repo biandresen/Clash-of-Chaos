@@ -12,12 +12,12 @@ Hero.prototype.bow = function () {
 Hero.prototype.cheer = function () {
   return this.name + " cheers loudly";
 };
-function Warrior(name, heroClass, level, weapon, score) {
+function Warrior(name, heroClass, level, weapon, kills) {
   this.name = name;
   this.heroClass = heroClass;
   this.level = level;
   this.weapon = weapon;
-  this.score = score;
+  this.kills = kills;
 }
 Warrior.prototype.attack = function (weapon) {
   if (weapon != "wand")
@@ -25,12 +25,12 @@ Warrior.prototype.attack = function (weapon) {
   else
     return this.name + " attacks " + computerCharacter + " with his " + weapon;
 };
-function Mage(name, heroClass, level, weapon, score) {
+function Mage(name, heroClass, level, weapon, kills) {
   this.name = name;
   this.heroClass = heroClass;
   this.level = level;
   this.weapon = weapon;
-  this.score = score;
+  this.kills = kills;
 }
 Mage.prototype.attack = function (weapon) {
   if (weapon != "wand")
@@ -44,7 +44,7 @@ Object.setPrototypeOf(Mage.prototype, Hero.prototype);
 const itemCharacterName = document.querySelector(".toolbar-item1");
 const itemClass = document.querySelector(".toolbar-item2");
 const itemLevel = document.querySelector(".toolbar-item3");
-const itemScore = document.querySelector(".toolbar-item4");
+const itemkills = document.querySelector(".toolbar-item4");
 const itemExit = document.querySelector(".toolbar-item5");
 const btnAttack = document.querySelector(".melee-attack");
 const btnRangedAttack = document.querySelector(".ranged-attack");
@@ -53,8 +53,12 @@ const btnBow = document.querySelector(".bow");
 const btnCheer = document.querySelector(".cheer");
 const warriorImg = document.querySelector("#warrior");
 const mageImg = document.querySelector("#mage");
-const battleMageImg = document.querySelector(".battle-mage-img");
-const werewolfImg = document.querySelector(".werewolf-img");
+const goblinImg = document.querySelector("#goblin-img");
+const nightmareBoyImg = document.querySelector("#nightmareBoy-img");
+const werewolfImg = document.querySelector("#werewolf-img");
+const griffinImg = document.querySelector("#griffin-img");
+const dragonImg = document.querySelector("#dragon-img");
+const battleMageImg = document.querySelector("#battle-mage-img");
 const axeImage = document.querySelector("#axe");
 const swordImage = document.querySelector("#sword");
 const wandImage = document.querySelector("#wand");
@@ -184,8 +188,12 @@ function resetBeforeBattle() {
   playerTurn = true;
   computerCombatText.style.backgroundColor = "";
   warriorImg.classList = "warrior";
-  werewolfImg.classList = "werewolf-img";
-  battleMageImg.classList = "battle-mage-img";
+  goblinImg.classList = "computer-img";
+  nightmareBoyImg.classList = "computer-img";
+  werewolfImg.classList = "computer-img";
+  griffinImg.classList = "computer-img";
+  dragonImg.classList = "computer-img";
+  battleMageImg.classList = "computer-img";
   playerCombatText.classList = "player-combat-text";
   computerCombatText.classList = "computer-combat-text";
   computerCombatLog.innerHTML = "";
@@ -249,7 +257,7 @@ function setUpGame() {
   itemCharacterName.textContent = "Name: " + player.name;
   itemClass.textContent = "Class: " + player.heroClass;
   itemLevel.textContent = "Level: " + player.level;
-  itemScore.textContent = "Score: " + player.score;
+  itemkills.textContent = "kills: " + player.kills;
   messageArea.style.display = "none";
   characterSelectionArea.style.display = "none";
   characterCreationArea.style.display = "none";
@@ -265,18 +273,54 @@ function insertCharacters() {
     mageImg.classList = "character-placement";
     battleField.appendChild(mageImg);
   }
-  if (player.score === 0) {
+  if (player.kills === 0) {
+    computerCharacter = "Goblin";
+    goblinImg.style.display = "";
+    nightmareBoyImg.style.display = "none";
+    werewolfImg.style.display = "none";
+    griffinImg.style.display = "none";
+    dragonImg.style.display = "none";
+    battleMageImg.style.display = "none";
+  } else if (player.kills === 1) {
+    computerCharacter = "Nightmare";
+    nightmareBoyImg.style.display = "";
+    goblinImg.style.display = "none";
+    werewolfImg.style.display = "none";
+    griffinImg.style.display = "none";
+    dragonImg.style.display = "none";
+    battleMageImg.style.display = "none";
+  } else if (player.kills === 2) {
     computerCharacter = "Werewolf";
     werewolfImg.style.display = "";
+    goblinImg.style.display = "none";
+    nightmareBoyImg.style.display = "none";
+    griffinImg.style.display = "none";
+    dragonImg.style.display = "none";
     battleMageImg.style.display = "none";
-  } else if (player.score === 1) {
-    computerCharacter = "Battle-mage";
+  } else if (player.kills === 3) {
+    computerCharacter = "Griffin";
+    griffinImg.style.display = "";
     werewolfImg.style.display = "none";
-    battleMageImg.style.display = "";
-  } else if (player.score === 2) {
-    computerCharacter = "Battle-mage";
+    goblinImg.style.display = "none";
+    nightmareBoyImg.style.display = "none";
+    dragonImg.style.display = "none";
+    battleMageImg.style.display = "none";
+  } else if (player.kills === 4) {
+    computerCharacter = "Dragon";
+    dragonImg.style.display = "";
     werewolfImg.style.display = "none";
+    goblinImg.style.display = "none";
+    nightmareBoyImg.style.display = "none";
+    griffinImg.style.display = "none";
+    battleMageImg.style.display = "none";
+  } else if (player.kills === 5) {
+    computerCharacter = "Battle-mage";
     battleMageImg.style.display = "";
+    werewolfImg.style.display = "none";
+    goblinImg.style.display = "none";
+    nightmareBoyImg.style.display = "none";
+    griffinImg.style.display = "none";
+    dragonImg.style.display = "none";
   }
 }
 function startBattle() {
@@ -309,17 +353,29 @@ function calculateAttackDamage(weapon) {
     baseDamage = 10;
     critChance = 0.3;
   } else if (weapon === "sword") {
-    baseDamage = 15;
+    baseDamage = 13;
     critChance = 0.2;
   } else if (weapon === "wand") {
-    baseDamage = 20;
+    baseDamage = 16;
     critChance = 0.15;
-  } else if (weapon === "Werewolf") {
-    baseDamage = 80;
-    critChance = 0.5;
-  } else if (weapon === "Battle-mage") {
-    baseDamage = 25;
+  } else if (weapon === "Goblin") {
+    baseDamage = 11;
+    critChance = 0.05;
+  } else if (weapon === "Nightmare") {
+    baseDamage = 12;
     critChance = 0.1;
+  } else if (weapon === "Werewolf") {
+    baseDamage = 13;
+    critChance = 0.15;
+  } else if (weapon === "Griffin") {
+    baseDamage = 14;
+    critChance = 0.18;
+  } else if (weapon === "Dragon") {
+    baseDamage = 15;
+    critChance = 0.2;
+  } else if (weapon === "Battle-mage") {
+    baseDamage = 15;
+    critChance = 0.3;
   }
 
   let totalCritChance = Math.random() + critChance;
@@ -411,8 +467,12 @@ function winningDisplay(winner) {
     warriorImg.classList = "dead character-placement";
     mageImg.classList = "dead character-placement";
   } else {
-    werewolfImg.classList = "dead werewolf-img";
-    battleMageImg.classList = "dead battle-mage-img";
+    goblinImg.classList = "dead computer-img";
+    nightmareBoyImg.classList = "dead computer-img";
+    werewolfImg.classList = "dead computer-img";
+    griffinImg.classList = "dead computer-img";
+    dragonImg.classList = "dead computer-img";
+    battleMageImg.classList = "dead computer-img";  
   }
 
   setTimeout(() => {
@@ -422,7 +482,7 @@ function winningDisplay(winner) {
 }
 function displayBattleOverMessage(winner) {
   if (winner === "player") {
-    player.score++;
+    player.kills++;
     player.level++;
     messageArea.style.display = "";
     btnPlayAgain.style.display = "";

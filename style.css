@@ -135,7 +135,7 @@ img {
 
 .character img:hover {
   cursor: pointer;
-  transform: scale(1.07);
+  transform: scale(1.05);
 }
 
 .character {
@@ -276,11 +276,12 @@ input[id="weapon"] {
   grid-template-rows: 0.5fr 1fr;
 }
 
-.werewolf-img,
-.battle-mage-img {
+.computer-img {
   grid-column: 3 / 4;
   grid-row: 2 / 3;
-  height: 360px;
+  height: 340px;
+  position: relative;
+  top: 25px;
   justify-self: center;
   align-self: center;
   width: auto;
