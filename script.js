@@ -41,13 +41,14 @@ Mage.prototype.attack = function (weapon) {
 Object.setPrototypeOf(Warrior.prototype, Hero.prototype);
 Object.setPrototypeOf(Mage.prototype, Hero.prototype);
 // QUERY SELECTORS AND ELEMENT CREATION--------------------
+const backgroundPicture = document.querySelector(".background-picture");
+const headline = document.querySelector("#headline");
 const itemCharacterName = document.querySelector(".toolbar-item1");
 const itemClass = document.querySelector(".toolbar-item2");
 const itemLevel = document.querySelector(".toolbar-item3");
-const itemkills = document.querySelector(".toolbar-item4");
+const itemKills = document.querySelector(".toolbar-item4");
 const itemExit = document.querySelector(".toolbar-item5");
-const btnAttack = document.querySelector(".melee-attack");
-const btnRangedAttack = document.querySelector(".ranged-attack");
+const btnAttack = document.querySelector(".attack");
 const btnGreet = document.querySelector(".greet");
 const btnBow = document.querySelector(".bow");
 const btnCheer = document.querySelector(".cheer");
@@ -101,7 +102,7 @@ const characterCreationImage = document.querySelector(
   ".character-creation-image"
 );
 const battleField = document.querySelector(".battle-field");
-const spellBar = document.querySelector(".spellbar");
+const spells = document.querySelector(".spells");
 // GLOBAL VARIABLE DECLARATION----------------------------
 let computerCharacter = "";
 let chosenCharacter = false;
@@ -167,26 +168,28 @@ document.addEventListener("keydown", function (event) {
 });
 document.addEventListener("keydown", function (event) {
   if (event.key === "2") {
-    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8";
+    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
     playerCombatText.textContent = player.greet();
   }
 });
 document.addEventListener("keydown", function (event) {
   if (event.key === "3") {
-    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8";
+    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
     playerCombatText.textContent = player.bow();
   }
 });
 document.addEventListener("keydown", function (event) {
   if (event.key === "4") {
-    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8";
+    playerCombatText.style.backgroundColor = "rgb(0,0,0,0.8)";
     playerCombatText.textContent = player.cheer();
   }
 });
 // FUNCTIONS--------------------------------------------------
 function resetBeforeBattle() {
   playerTurn = true;
+  backgroundPicture.classList = "background-picture";
   computerCombatText.style.backgroundColor = "";
+  playerCombatText.style.backgroundColor = "";
   warriorImg.classList = "warrior";
   goblinImg.classList = "computer-img";
   nightmareBoyImg.classList = "computer-img";
@@ -215,7 +218,7 @@ function resetBeforeBattle() {
   btnBattle.style.display = "none";
   btnPlayAgain.style.display = "none";
   battleField.style.display = "none";
-  spellBar.style.display = "none";
+  spells.style.display = "none";
   messageArea.style.display = "none";
   characterSelectionArea.style.display = "none";
   characterCreationArea.style.display = "none";
@@ -227,6 +230,7 @@ function startGame() {
 }
 function displayWelcomeMessage() {
   messageArea.style.display = "";
+  headline.style.display = "";
   welcomeHeading.textContent = "Welcome to the Clash of Chaos!";
   welcomeParagraph.textContent =
     "Choose your class, give them a name and choose a weapon";
@@ -257,7 +261,7 @@ function setUpGame() {
   itemCharacterName.textContent = "Name: " + player.name;
   itemClass.textContent = "Class: " + player.heroClass;
   itemLevel.textContent = "Level: " + player.level;
-  itemkills.textContent = "kills: " + player.kills;
+  itemKills.textContent = "Kills: " + player.kills;
   messageArea.style.display = "none";
   characterSelectionArea.style.display = "none";
   characterCreationArea.style.display = "none";
@@ -266,6 +270,7 @@ function setUpGame() {
   insertCharacters();
 }
 function insertCharacters() {
+  headline.style.display = "none";
   if (player.heroClass === "Warrior") {
     warriorImg.classList = "character-placement";
     battleField.appendChild(warriorImg);
@@ -275,6 +280,9 @@ function insertCharacters() {
   }
   if (player.kills === 0) {
     computerCharacter = "Goblin";
+    backgroundPicture.style.backgroundImage = `url("/img/woods.jpg")`;
+    backgroundPicture.classList =
+      "background-picture background-picture-bottom";
     goblinImg.style.display = "";
     nightmareBoyImg.style.display = "none";
     werewolfImg.style.display = "none";
@@ -283,6 +291,8 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 1) {
     computerCharacter = "Nightmare";
+    backgroundPicture.style.backgroundImage = `url("/img/nightmareWoods.jpg")`;
+    backgroundPicture.classList = "background-picture";
     nightmareBoyImg.style.display = "";
     goblinImg.style.display = "none";
     werewolfImg.style.display = "none";
@@ -291,6 +301,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 2) {
     computerCharacter = "Werewolf";
+    backgroundPicture.style.backgroundImage = `url("/img/moonWoods.jpg")`;
     werewolfImg.style.display = "";
     goblinImg.style.display = "none";
     nightmareBoyImg.style.display = "none";
@@ -299,6 +310,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 3) {
     computerCharacter = "Griffin";
+    backgroundPicture.style.backgroundImage = `url("/img/openField.jpg")`;
     griffinImg.style.display = "";
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
@@ -307,6 +319,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 4) {
     computerCharacter = "Dragon";
+    backgroundPicture.style.backgroundImage = `url("/img/outsideCastle.jpg")`;
     dragonImg.style.display = "";
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
@@ -316,6 +329,7 @@ function insertCharacters() {
   } else if (player.kills === 5) {
     computerCharacter = "Battle-mage";
     battleMageImg.style.display = "";
+    backgroundPicture.style.backgroundImage = `url("/img/insideCastle.avif")`;
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
     nightmareBoyImg.style.display = "none";
@@ -337,7 +351,7 @@ function setBattleBarsStatus(set) {
   else status = "none";
   playerHealthNumbers.style.display = status;
   computerHealthNumbers.style.display = status;
-  spellBar.style.display = status;
+  spells.style.display = status;
   playerHealthBarOuter.style.display = status;
   computerHealthBarOuter.style.display = status;
   playerCombatText.style.display = status;
@@ -356,7 +370,7 @@ function calculateAttackDamage(weapon) {
     baseDamage = 13;
     critChance = 0.2;
   } else if (weapon === "wand") {
-    baseDamage = 16;
+    baseDamage = 160;
     critChance = 0.15;
   } else if (weapon === "Goblin") {
     baseDamage = 11;
@@ -470,9 +484,11 @@ function winningDisplay(winner) {
     goblinImg.classList = "dead computer-img";
     nightmareBoyImg.classList = "dead computer-img";
     werewolfImg.classList = "dead computer-img";
-    griffinImg.classList = "dead computer-img";
-    dragonImg.classList = "dead computer-img";
-    battleMageImg.classList = "dead computer-img";  
+    battleMageImg.classList = "dead computer-img";
+    if (computerCharacter === "Griffin" || computerCharacter === "Dragon") {
+      griffinImg.classList = "dead180 computer-img";
+      dragonImg.classList = "dead computer-img";
+    }
   }
 
   setTimeout(() => {
