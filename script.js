@@ -1,4 +1,4 @@
-// OBJECT AND METHOD DECLARATION--------------------
+//#region OBJECTS
 function Hero(name, level) {
   this.name = name;
   this.level = level;
@@ -46,7 +46,9 @@ Mage.prototype.attack = function (weapon) {
 };
 Object.setPrototypeOf(Warrior.prototype, Hero.prototype);
 Object.setPrototypeOf(Mage.prototype, Hero.prototype);
-// QUERY SELECTORS AND ELEMENT CREATION--------------------
+//#endregion
+
+//#region QUERY SELECTORS
 const backgroundPicture = document.querySelector(".background-picture");
 const headline = document.querySelector("#headline");
 const itemCharacterName = document.querySelector(".toolbar-item1");
@@ -110,7 +112,9 @@ const characterCreationImage = document.querySelector(
 );
 const battleField = document.querySelector(".battle-field");
 const spells = document.querySelector(".spells");
-// GLOBAL VARIABLE DECLARATION----------------------------
+//#endregion
+
+//#region GLOBAL VARIABLES
 let computerCharacter = "";
 let chosenCharacter = false;
 let playerTurn;
@@ -121,9 +125,9 @@ let computerTimesCrit = 0;
 let computerTimesAttack = 0;
 let playerCurrentHealth;
 let computerCurrentHealth;
-//------------------------------------------------------
-//------------------------------------------------------
-// EVENT LISTENERS---------------------------------------
+//#endregion
+
+//#region EVENT LISTENERS
 warriorImg.addEventListener("click", () => {
   if (chosenCharacter === false) createCharacter("Warrior");
 });
@@ -191,7 +195,9 @@ document.addEventListener("keydown", function (event) {
     playerCombatText.textContent = player.cheer();
   }
 });
-// FUNCTIONS--------------------------------------------------
+//#endregion
+
+//#region FUNCTIONS
 function resetBeforeBattle() {
   playerTurn = false;
   chest.style.display = "none";
@@ -232,7 +238,6 @@ function resetBeforeBattle() {
   characterCreationArea.style.display = "none";
   btnCombatLog.style.display = "none";
 }
-
 function playSound(soundId) {
   const sound = document.getElementById(soundId);
   sound.play();
@@ -430,7 +435,6 @@ function calculateAttackDamage(weapon) {
 
   return damage;
 }
-
 function playSoundEffect(effect) {
   if (effect === "fists" || effect === "Nightmare") {
     playSound("punchSound");
@@ -589,7 +593,6 @@ function displayBattleOverMessage(winner) {
     messageArea.appendChild(btnCombatLog);
   }
 }
-
 function getReward() {
   stopSound("musicSound");
   playSoundEffect("victory");
@@ -636,6 +639,7 @@ function showCombatLog() {
     messageArea.appendChild(btnNewGame);
   }
 }
+//#endregion
 
 // INITIALIZING OF THE PROGRAM-----------------------------
 startGame();
