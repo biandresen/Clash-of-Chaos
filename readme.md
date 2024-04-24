@@ -2,6 +2,8 @@ Just a private project for practicing some learned skills from The Odin Project.
 Images from Clean png: https://www.cleanpng.com/ and random from google
 Sounds from YouTube
 
+<a href="https://biandresen.github.io/Clash-of-Chaos/">Live Server</a>
+
 Fix:
 
 <!-- * playerCombatText background before attack -->
