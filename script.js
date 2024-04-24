@@ -50,6 +50,7 @@ Object.setPrototypeOf(Mage.prototype, Hero.prototype);
 
 //#region QUERY SELECTORS
 const backgroundPicture = document.querySelector(".background-picture");
+const contentArea = document.querySelector(".content");
 const headline = document.querySelector("#headline");
 const itemCharacterName = document.querySelector(".toolbar-item1");
 const itemClass = document.querySelector(".toolbar-item2");
@@ -60,6 +61,7 @@ const btnAttack = document.querySelector(".attack");
 const btnGreet = document.querySelector(".greet");
 const btnLaugh = document.querySelector(".laugh");
 const btnCheer = document.querySelector(".cheer");
+const kingImg = document.querySelector("#king");
 const warriorImg = document.querySelector("#warrior");
 const mageImg = document.querySelector("#mage");
 const goblinImg = document.querySelector("#goblin-img");
@@ -78,6 +80,7 @@ const welcomeHeading = document.createElement("div");
 const welcomeParagraph = document.createElement("div");
 const btnPlayAgain = document.createElement("button");
 const btnCombatLog = document.createElement("button");
+const btnSkipStory = document.createElement("button");
 const btnNewGame = document.createElement("button");
 const btnReset = document.querySelector(".toolbar-item5");
 const characterCreationName = document.querySelector(
@@ -150,7 +153,7 @@ characterForm.addEventListener("submit", function (event) {
   event.preventDefault();
   player.name = document.querySelector("#name").value;
   player.weapon = document.querySelector("#weapon-choice").value;
-  setUpGame();
+  tellStory(player.heroClass);
 });
 btnReset.addEventListener("click", () => {
   window.location.reload();
@@ -163,13 +166,16 @@ btnAttack.addEventListener("click", function () {
 });
 btnPlayAgain.addEventListener("click", () => {
   resetBeforeBattle();
-  setUpGame();
+  tellStory(player.heroClass);
 });
 btnNewGame.addEventListener("click", () => {
   window.location.reload();
 });
 btnCombatLog.addEventListener("click", () => {
   showCombatLog();
+});
+btnSkipStory.addEventListener("click", () => {
+  setUpGame();
 });
 document.addEventListener("keydown", function (event) {
   if (event.key === "1" && playerTurn) {
@@ -199,6 +205,9 @@ document.addEventListener("keydown", function (event) {
 
 //#region FUNCTIONS
 function resetBeforeBattle() {
+  btnSkipStory.style.display = "none";
+  welcomeHeading.classList = "story-heading";
+  welcomeParagraph.classList = "story-text";
   playerTurn = false;
   chest.style.display = "none";
   backgroundPicture.classList = "background-picture";
@@ -241,7 +250,7 @@ function resetBeforeBattle() {
 function playSound(soundId) {
   const sound = document.getElementById(soundId);
   sound.play();
-  if (soundId === "musicSound") sound.volume = 0.6;
+  if (soundId === "musicSound") sound.volume = 0.5;
 }
 function stopSound(soundId) {
   const sound = document.getElementById(soundId);
@@ -254,9 +263,9 @@ function startGame() {
 function displayWelcomeMessage() {
   messageArea.style.display = "";
   headline.style.display = "";
-  welcomeHeading.textContent = "Welcome to the Clash of Chaos!";
-  welcomeParagraph.textContent =
-    "Choose your class, give them a name and choose a weapon";
+  welcomeHeading.textContent = "Welcome to Tarrida Village!";
+  welcomeParagraph.innerHTML =
+    "The village was robbed! Someone has to get the gold back!<br><br>Who will take on this quest, and will they succeed?";
   messageArea.appendChild(welcomeHeading);
   messageArea.appendChild(welcomeParagraph);
   characterSelectionArea.style.display = "";
@@ -286,6 +295,7 @@ function setUpGame() {
   itemLevel.textContent = "Level: " + player.level;
   itemKills.textContent = "Kills: " + player.kills;
   messageArea.style.display = "none";
+  btnSkipStory.style.display = "none";
   characterSelectionArea.style.display = "none";
   characterCreationArea.style.display = "none";
   battleField.style.display = "";
@@ -303,7 +313,7 @@ function insertCharacters() {
   }
   if (player.kills === 0) {
     computerCharacter = "Goblin";
-    backgroundPicture.style.backgroundImage = `url("/img/woods.jpg")`;
+    backgroundPicture.style.backgroundImage = `url("./img/woods.jpg")`;
     backgroundPicture.classList =
       "background-picture background-picture-bottom";
     goblinImg.style.display = "";
@@ -314,7 +324,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 1) {
     computerCharacter = "Nightmare";
-    backgroundPicture.style.backgroundImage = `url("/img/nightmareWoods.jpg")`;
+    backgroundPicture.style.backgroundImage = `url("./img/nightmareWoods.jpg")`;
     backgroundPicture.classList = "background-picture";
     nightmareBoyImg.style.display = "";
     goblinImg.style.display = "none";
@@ -324,7 +334,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 2) {
     computerCharacter = "Werewolf";
-    backgroundPicture.style.backgroundImage = `url("/img/moonWoods.jpg")`;
+    backgroundPicture.style.backgroundImage = `url("./img/moonWoods.jpg")`;
     werewolfImg.style.display = "";
     goblinImg.style.display = "none";
     nightmareBoyImg.style.display = "none";
@@ -333,7 +343,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 3) {
     computerCharacter = "Griffin";
-    backgroundPicture.style.backgroundImage = `url("/img/openField.jpg")`;
+    backgroundPicture.style.backgroundImage = `url("./img/openField.jpg")`;
     griffinImg.style.display = "";
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
@@ -342,7 +352,7 @@ function insertCharacters() {
     battleMageImg.style.display = "none";
   } else if (player.kills === 4) {
     computerCharacter = "Dragon";
-    backgroundPicture.style.backgroundImage = `url("/img/outsideCastle.jpg")`;
+    backgroundPicture.style.backgroundImage = `url("./img/outsideCastle.jpg")`;
     dragonImg.style.display = "";
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
@@ -352,7 +362,7 @@ function insertCharacters() {
   } else if (player.kills === 5) {
     computerCharacter = "Battle-mage";
     battleMageImg.style.display = "";
-    backgroundPicture.style.backgroundImage = `url("/img/insideCastle.avif")`;
+    backgroundPicture.style.backgroundImage = `url("./img/insideCastle.avif")`;
     werewolfImg.style.display = "none";
     goblinImg.style.display = "none";
     nightmareBoyImg.style.display = "none";
@@ -490,7 +500,7 @@ function attackComputer() {
     computerHealthBarInner.style.width = "0%";
     computerHealthNumbers.textContent = "0/100";
     computerCombatLog.innerHTML += "<br>Died";
-    battleOverDisplay("player");
+    battleOver("player");
     return;
   }
   crit = false;
@@ -525,12 +535,12 @@ function attackPlayer() {
     playerHealthBarInner.style.width = "0%";
     playerHealthNumbers.textContent = "0/100";
     playerCombatLog.innerHTML += "<br>Died";
-    battleOverDisplay("computer");
+    battleOver("computer");
   }
   crit = false;
   playerTurn = true;
 }
-function battleOverDisplay(winner) {
+function battleOver(winner) {
   if (winner !== "player") {
     warriorImg.classList = "dead character-placement";
     mageImg.classList = "dead character-placement";
@@ -556,6 +566,7 @@ function battleOverDisplay(winner) {
   }, 2000);
 }
 function displayBattleOverMessage(winner) {
+  playerTurn = false;
   if (winner === "player" && computerCharacter === "Battle-mage") {
     getReward();
     return;
@@ -576,7 +587,6 @@ function displayBattleOverMessage(winner) {
     btnCombatLog.style.display = "";
     messageArea.appendChild(btnCombatLog);
   } else {
-    playerTurn = false;
     messageArea.style.display = "";
     btnPlayAgain.style.display = "";
     welcomeHeading.textContent = "You lost!";
@@ -596,19 +606,20 @@ function displayBattleOverMessage(winner) {
 function getReward() {
   stopSound("musicSound");
   playSoundEffect("victory");
-  messageArea.style.display = "";
-  chest.style.display = "";
-  welcomeParagraph.textContent = "...and found the treasure!";
   gameOver();
 }
 function gameOver() {
   player.kills++;
   player.level++;
   messageArea.style.display = "";
-  welcomeHeading.textContent = "You beat the game!";
-  btnNewGame.classList = "button-new-game";
-  btnNewGame.textContent = "New Game";
-  messageArea.appendChild(btnNewGame);
+  chest.style.display = "";
+  welcomeHeading.textContent = "You found the treasure!";
+  welcomeParagraph.innerHTML =
+    "<br>The king will be very happy.<br><br> Hurry back!";
+  btnPlayAgain.classList = "play-again-button";
+  btnPlayAgain.textContent = "Continue";
+  btnPlayAgain.style.display = "";
+  messageArea.appendChild(btnPlayAgain);
   btnCombatLog.classList = "play-again-button";
   btnCombatLog.textContent = "Combat log";
   btnCombatLog.style.display = "";
@@ -633,10 +644,141 @@ function showCombatLog() {
     computerTimesCrit +
     " critical hits.";
 
-  if (computerCharacter === "Battle-mage") {
-    btnNewGame.classList = "button-new-game";
+  // if (computerCharacter === "Battle-mage") {
+  //   btnNewGame.classList = "button-new-game";
+  //   btnNewGame.textContent = "New Game";
+  //   messageArea.appendChild(btnNewGame);
+  // }
+}
+function tellStory(hero) {
+  headline.style.display = "none";
+  characterCreationArea.style.display = "none";
+  messageArea.style.display = "";
+  if (player.level === 1) {
+    welcomeHeading.textContent = "Chapter 1";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " answered Tarrida's call to action and set out to retrieve the stolen treasure.<br><br>After a while on the sandy gravel road, outside the village, he saw some broken branches by the woods. The " +
+      hero +
+      " found it interesting and entered through the opening into the dense green paradise.<br><br>As morning broke into mid-day, with the sun straight above the trees, the " +
+      hero +
+      " spotted a green creature that didn't belong in the natural fauna of the woods.<br><br>The " +
+      hero +
+      " walked towards it and broke a few sticks, which drew the creature's attention...";
+  } else if (player.level === 2) {
+    backgroundPicture.style.backgroundImage =
+      "linear-gradient(0deg, rgb(0, 0, 0), rgb(27, 2, 35))";
+    welcomeHeading.textContent = "Chapter 2";
+    welcomeParagraph.innerHTML =
+      "After the intense fight with the green creature the " +
+      hero +
+      " got so tired and fell asleep behind a bush by a big tree.<br><br>While the " +
+      hero +
+      " was sleeping peacefully with songs of birds and gentle winds in the background, he's dreams started going darker.<br><br>The " +
+      hero +
+      "'s vision inside the dream got more and more enshrouded with fog and darkness. A strong black silhouette emerged and drew closer and closer in front of the " +
+      hero +
+      "'s mental vision.<br><br>The " +
+      hero +
+      "'s heart raced faster and faster as the shadow got closer and closer. He finally woke up, only to see the unreal...";
+  } else if (player.level === 3) {
+    backgroundPicture.style.backgroundImage =
+      "linear-gradient(0deg, rgb(0, 0, 0), rgb(27, 2, 35))";
+    welcomeHeading.textContent = "Chapter 3";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " answered Tarrida's call to action and set out to retrieve the stolen treasure.<br><br>After a while on the sandy gravel road outside the city he saw some broken branches by the woods. The " +
+      hero +
+      " found it interesting and entered through the opening into the dense green paradise.<br><br>As morning broke into mid-day with the sun straight above the trees the " +
+      hero +
+      " spotted a green creature that didn't belong in the natural fauna of the woods.<br><br>The " +
+      hero +
+      " accelerated towards it and drew it's attention...";
+  } else if (player.level === 4) {
+    backgroundPicture.style.backgroundImage =
+      "linear-gradient(0deg, rgb(0, 0, 0), rgb(27, 2, 35))";
+    welcomeHeading.textContent = "Chapter 4";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " answered Tarrida's call to action and set out to retrieve the stolen treasure.<br><br>After a while on the sandy gravel road outside the city he saw some broken branches by the woods. The " +
+      hero +
+      " found it interesting and entered through the opening into the dense green paradise.<br><br>As morning broke into mid-day with the sun straight above the trees the " +
+      hero +
+      " spotted a green creature that didn't belong in the natural fauna of the woods.<br><br>The " +
+      hero +
+      " accelerated towards it and drew it's attention...";
+  } else if (player.level === 5) {
+    backgroundPicture.style.backgroundImage =
+      "linear-gradient(0deg, rgb(0, 0, 0), rgb(27, 2, 35))";
+    welcomeHeading.textContent = "Chapter 5";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " answered Tarrida's call to action and set out to retrieve the stolen treasure.<br><br>After a while on the sandy gravel road outside the city he saw some broken branches by the woods. The " +
+      hero +
+      " found it interesting and entered through the opening into the dense green paradise.<br><br>As morning broke into mid-day with the sun straight above the trees the " +
+      hero +
+      " spotted a green creature that didn't belong in the natural fauna of the woods.<br><br>The " +
+      hero +
+      " accelerated towards it and drew it's attention...";
+  } else if (player.level === 6) {
+    backgroundPicture.style.backgroundImage =
+      "linear-gradient(0deg, rgb(0, 0, 0), rgb(27, 2, 35))";
+    welcomeHeading.textContent = "Chapter 6";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " answered Tarrida's call to action and set out to retrieve the stolen treasure.<br><br>After a while on the sandy gravel road outside the city he saw some broken branches by the woods. The " +
+      hero +
+      " found it interesting and entered through the opening into the dense green paradise.<br><br>As morning broke into mid-day with the sun straight above the trees the " +
+      hero +
+      " spotted a green creature that didn't belong in the natural fauna of the woods.<br><br>The " +
+      hero +
+      " accelerated towards it and drew it's attention...";
+  } else if (player.level === 7) {
+    backgroundPicture.style.backgroundImage = 'url("./img/town.avif")';
+    kingImg.classList = "place-king-ending";
+    messageArea.classList += " message-area-ending";
+    chest.style.display = "";
+    chest.classList = "place-chest-ending";
+    contentArea.appendChild(chest);
+    playSound("applauseSound");
+
+    if (player.heroClass === "Warrior") {
+      warriorImg.style.display = "";
+      warriorImg.classList = " place-hero-ending";
+      contentArea.appendChild(warriorImg);
+    } else if (player.heroClass === "Mage") {
+      mageImg.style.display = "";
+      mageImg.classList = " place-hero-ending";
+      contentArea.appendChild(mageImg);
+    }
+
+    welcomeHeading.textContent = "Chapter 7";
+    welcomeParagraph.innerHTML =
+      "The " +
+      hero +
+      " returned back home to Tarrida Village with a small subtle smile and a big treasure chest.<br><br> The king and the whole village cheered for the " +
+      hero +
+      "'s safe return with himself and the gold. The king promised him a feast and celebration in the king's hall the next day.<br><br>...but for now the " +
+      hero +
+      "was sweaty and tired with a strong desire for a bath and a soft bed.<br><br>THE END";
+  }
+  if (player.level === 7) {
+    btnNewGame.style.display = "";
+    btnNewGame.classList = "button-new-game new-game-button-ending";
     btnNewGame.textContent = "New Game";
-    messageArea.appendChild(btnNewGame);
+    welcomeParagraph.appendChild(btnNewGame);
+  } else {
+    messageArea.appendChild(welcomeHeading);
+    messageArea.appendChild(welcomeParagraph);
+    btnSkipStory.classList = "button-skip-story";
+    btnSkipStory.textContent = "Skip";
+    btnSkipStory.style.display = "";
+    messageArea.appendChild(btnSkipStory);
   }
 }
 //#endregion

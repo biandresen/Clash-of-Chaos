@@ -28,3 +28,13 @@ Fix:
 
 <!-- * Stop theme music when win over battle-mage -->
 <!-- * Fix Next-battle button issue when winning over battle-mage -->
+<!-- * btnPlayAgain.style.display = ""; at the end -->
+<!-- * After going to chapter 7 story (last one), insert a crowd cheering (sound and images), -->
+<!-- * Remove new game button in combat log at the end -->
+<!-- * Ability to start new game after chapter 7 -->
+
+- Remove the "Battle"-button?
+- Fix the rest of the story chapters
+- Record and add audio for reading the stories
+- Add different music to the different levels/battles
+- Add speeches to the different computers right before the battle starts
