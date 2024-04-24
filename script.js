@@ -65,6 +65,7 @@ const swordImage = document.querySelector("#sword");
 const wandImage = document.querySelector("#wand");
 const weaponTextInput = document.querySelector("#weapon-choice");
 const characterForm = document.querySelector("#character-creation-form");
+const chest = document.querySelector("#chest");
 const welcomeHeading = document.createElement("div");
 const welcomeParagraph = document.createElement("div");
 const btnPlayAgain = document.createElement("button");
@@ -186,7 +187,8 @@ document.addEventListener("keydown", function (event) {
 });
 // FUNCTIONS--------------------------------------------------
 function resetBeforeBattle() {
-  playerTurn = true;
+  playerTurn = false;
+  chest.style.display = "none";
   backgroundPicture.classList = "background-picture";
   computerCombatText.style.backgroundColor = "";
   playerCombatText.style.backgroundColor = "";
@@ -338,6 +340,7 @@ function insertCharacters() {
   }
 }
 function startBattle() {
+  playerTurn = true;
   playerTimesCrit = 0;
   playerTimesAttack = 0;
   computerTimesCrit = 0;
@@ -370,25 +373,25 @@ function calculateAttackDamage(weapon) {
     baseDamage = 13;
     critChance = 0.2;
   } else if (weapon === "wand") {
-    baseDamage = 160;
+    baseDamage = 16;
     critChance = 0.15;
   } else if (weapon === "Goblin") {
-    baseDamage = 11;
+    baseDamage = 12;
     critChance = 0.05;
   } else if (weapon === "Nightmare") {
-    baseDamage = 12;
+    baseDamage = 13;
     critChance = 0.1;
   } else if (weapon === "Werewolf") {
-    baseDamage = 13;
+    baseDamage = 14;
     critChance = 0.15;
   } else if (weapon === "Griffin") {
-    baseDamage = 14;
+    baseDamage = 15;
     critChance = 0.18;
   } else if (weapon === "Dragon") {
-    baseDamage = 15;
+    baseDamage = 16;
     critChance = 0.2;
   } else if (weapon === "Battle-mage") {
-    baseDamage = 15;
+    baseDamage = 17;
     critChance = 0.3;
   }
 
@@ -415,7 +418,8 @@ function attackComputer() {
   computerCurrentHealth = parseFloat(
     computerHealthBarInner.style.width.slice(0, 3)
   );
-  let attackDamage = calculateAttackDamage(player.weapon).toFixed(1);
+  let attackDamage =
+    calculateAttackDamage(player.weapon).toFixed(1) + player.level;
   let computerNewHealth = computerCurrentHealth - attackDamage;
   computerHealthBarInner.style.width = computerNewHealth + "%";
 
@@ -487,17 +491,19 @@ function winningDisplay(winner) {
     battleMageImg.classList = "dead computer-img";
     if (computerCharacter === "Griffin" || computerCharacter === "Dragon") {
       griffinImg.classList = "dead180 computer-img";
-      dragonImg.classList = "dead computer-img";
+      dragonImg.classList = "dead180 computer-img";
     }
   }
 
   setTimeout(() => {
     setBattleBarsStatus("off");
     displayBattleOverMessage(winner);
-  }, 1000);
+  }, 1500);
 }
 function displayBattleOverMessage(winner) {
-  if (winner === "player") {
+  if (winner === "player" && computerCharacter === "Battle-mage") {
+    getReward();
+  } else if (winner === "player") {
     player.kills++;
     player.level++;
     messageArea.style.display = "";
@@ -529,6 +535,23 @@ function displayBattleOverMessage(winner) {
     messageArea.appendChild(btnCombatLog);
   }
 }
+
+function getReward() {
+  messageArea.style.display = "";
+  chest.style.display = "";
+  welcomeParagraph.textContent = "...and found the treasure!";
+  gameOver();
+}
+function gameOver() {
+  player.kills++;
+  player.level++;
+  messageArea.style.display = "";
+  welcomeHeading.textContent = "You beat the game!";
+  btnCombatLog.classList = "play-again-button";
+  btnCombatLog.textContent = "Combat log";
+  btnCombatLog.style.display = "";
+  messageArea.appendChild(btnCombatLog);
+}
 function showCombatLog() {
   btnCombatLog.style.display = "none";
   welcomeHeading.textContent = "Combat log";
@@ -547,6 +570,12 @@ function showCombatLog() {
     " normal hits<br>" +
     computerTimesCrit +
     " critical hits.";
+
+  if (computerCharacter === "Battle-mage") {
+    btnNewGame.classList = "button-new-game";
+    btnNewGame.textContent = "New Game";
+    messageArea.appendChild(btnNewGame);
+  }
 }
 
 // INITIALIZING OF THE PROGRAM-----------------------------

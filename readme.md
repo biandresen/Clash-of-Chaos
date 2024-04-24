@@ -9,6 +9,12 @@ Fix:
 <!-- * Fix moon wolf background (bottom problem) -->
 <!-- * Game Logo size. Too big -->
 <!-- * Griffin and Dragon should transform 180deg -->
-* End game after Battle Mage and add chest as a reward after the boss
-* Increase damage each level
-* Add sounds
+<!-- * End game after Battle Mage and add chest as a reward after the boss -->
+<!-- * Increase damage each level -->
+* Add sounds:
+- Level up
+- Attack with different player weapons
+- Attack with different computer weapons
+- theme background music
+- Victory sound
+- Chest sound? Zelda

@@ -465,3 +465,8 @@ input[id="weapon"] {
   position: relative;
   top: 220px;
 }
+
+#chest{
+  width: auto;
+  height: 200px;
+}
